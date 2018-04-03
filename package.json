@@ -21,5 +21,12 @@
         "fs-extra": "^4.0.2",
         "string-format": "^0.5.0",
         "torrent-search-api": "https://github.com/ylon/torrent-search-api/archive/0.2.tar.gz"
+    },
+    "prettier": {
+      "singleQuote": true,
+      "trailingComma": "none",
+      "parser": "flow",
+      "semi": true,
+      "tabWidth": 2
     }
 }
