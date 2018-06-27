@@ -15,7 +15,7 @@ return int
 H.filesize_MB = size => {
   if (typeof size == 'string') {
     size = size.toUpperCase();
-    size.replace('O', 'B');
+    size = size.replace('O', 'B');
     size = H.filesize_parse(size);
   }
   return Math.floor(size / 1024 / 1024);
