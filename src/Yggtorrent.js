@@ -1,3 +1,10 @@
+/*
+const URL = require('url').URL;
+url= new URL(url)
+url.hostname='ww3.yggtorrent.is'
+console.log(url.href);
+*/
+
 const format = require('string-format');
 const H = require('./H');
 
