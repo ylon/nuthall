@@ -21,6 +21,8 @@ class Yggtorrent {
       YGGTORRENT_PASS
     );
     this.ygg = this.torrentSearch._getProvider('Yggtorrent');
+    this.ygg.scrapeDatas.baseUrl = YGGTORRENT_BASEURL;
+    console.log(this.ygg.scrapeDatas.baseUrl);
   }
 
   search(query, category, limit) {
