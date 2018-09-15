@@ -14,7 +14,7 @@ class Yggtorrent {
     // this.torrentSearch = new(require('torrent-search-api'))()
     // this.torrentSearch = new(require('../../torrent-search-api-0.2'))()
     // this.torrentSearch = new (require('../../ylon.torrent-search-api'))();
-    this.torrentSearch = new (require('torrent-search-api'))();
+    this.torrentSearch = new (require('ylon.torrent-search-api'))();
     this.torrentSearch.enableProvider(
       'Yggtorrent',
       YGGTORRENT_USER,
