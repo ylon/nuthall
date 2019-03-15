@@ -1,27 +1,22 @@
-/*
-const URL = require('url').URL;
-url= new URL(url)
-url.hostname='ww3.yggtorrent.is'
-console.log(url.href);
-*/
-
+const dirname = require('path').dirname;
+const fs = require('fs-extra');
 const format = require('string-format');
 const H = require('./H');
 
-class Yggtorrent {
+module.exports = class Yggtorrent {
   constructor() {
-    require('yggtorrent-auth');
-    // this.torrentSearch = new(require('torrent-search-api'))()
-    // this.torrentSearch = new(require('../../torrent-search-api-0.2'))()
-    // this.torrentSearch = new (require('../../ylon.torrent-search-api'))();
-    this.torrentSearch = new (require('ylon.torrent-search-api'))();
+    this.yggConf = require('ygg.conf');
+    this.torrentSearch = require('torrent-search-api');
     this.torrentSearch.enableProvider(
       'Yggtorrent',
-      YGGTORRENT_USER,
-      YGGTORRENT_PASS
+      this.yggConf.user,
+      this.yggConf.pass
     );
-    this.ygg = this.torrentSearch._getProvider('Yggtorrent');
-    this.ygg.scrapeDatas.baseUrl = YGGTORRENT_BASEURL;
+    this.ygg = this.torrentSearch.getProvider('Yggtorrent');
+    this.ygg.baseUrl = this.yggConf.baseUrl;
+    this.ygg.resultsPerPageCount = 50;
+    this.ygg.categories['LastPresse'] =
+      'url:/engine/search?do=search&category=2140&sub_category=2156';
   }
 
   search(query, category, limit) {
@@ -38,7 +33,7 @@ class Yggtorrent {
   last(category, limit) {
     limit = limit ? parseInt(limit) : null;
     return this.torrentSearch
-      .last(category, limit)
+      .search('', 'Last' + category, limit)
       .then(torrents => this.format_torrents(torrents));
   }
 
@@ -60,7 +55,7 @@ class Yggtorrent {
     return torrents;
   }
 
-  download(arg, file = null) {
+  async download(arg, file = null) {
     var torrent = {
       provider: 'Yggtorrent',
       link: (arg => {
@@ -76,16 +71,16 @@ class Yggtorrent {
         }
       })(arg)
     };
+    await fs.ensureDir(dirname(file));
     return this.torrentSearch.downloadTorrent(torrent, file);
   }
 
   torrent_link_from_id(id) {
     return (
-      this.ygg.scrapeDatas.baseUrl +
+      this.ygg.baseUrl +
       format('/engine/download_torrent?id={id}', {
         id: id
       })
     );
   }
-}
-module.exports = Yggtorrent;
+};

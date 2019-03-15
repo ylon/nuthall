@@ -20,7 +20,7 @@
         "filesize-parser": "^1.4.1",
         "fs-extra": "^4.0.2",
         "string-format": "^0.5.0",
-        "torrent-search-api": "git+https://github.com/ylon/torrent-search-api.git#list_torrents"
+        "torrent-search-api": "git+https://github.com/ylon/torrent-search-api.git#nuthall"
     },
     "prettier": {
       "singleQuote": true,
