@@ -3,18 +3,20 @@ const fs = require('fs-extra');
 const format = require('string-format');
 const H = require('./H');
 
+const conf = { itemsPerPage: 50 };
+
 module.exports = class Yggtorrent {
   constructor() {
-    this.yggConf = require('ygg.conf');
+    this.conf = Object.assign(conf, require('ygg.conf'));
     this.torrentSearch = require('torrent-search-api');
     this.torrentSearch.enableProvider(
       'Yggtorrent',
-      this.yggConf.user,
-      this.yggConf.pass
+      this.conf.user,
+      this.conf.pass
     );
     this.ygg = this.torrentSearch.getProvider('Yggtorrent');
-    this.ygg.baseUrl = this.yggConf.baseUrl;
-    this.ygg.resultsPerPageCount = 50;
+    this.ygg.baseUrl = this.conf.baseUrl;
+    this.ygg.resultsPerPageCount = this.conf.itemsPerPage;
     this.ygg.categories['LastPresse'] =
       'url:/engine/search?do=search&category=2140&sub_category=2156';
   }
