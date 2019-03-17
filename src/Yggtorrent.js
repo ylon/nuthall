@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const format = require('string-format');
 const H = require('./H');
 
-const confDefault = { itemsPerPage: 50 };
+const confDefault = { name: 'yggtorrent', itemsPerPage: 50 };
 
 module.exports = class Yggtorrent {
   constructor(conf = {}) {
@@ -44,7 +44,7 @@ module.exports = class Yggtorrent {
   }
 
   format_torrent(t) {
-    t.source = 'yggtorrent';
+    t.source = this.name;
     t.id = H.re_firstMatch(t.link, /id=(\d+)/);
     t.prez = t.desc;
     t.size_MB = H.filesize_MB(t.size);
