@@ -55,6 +55,10 @@ module.exports = class Yggtorrent {
     return t;
   }
 
+  pageCount2itemCount(pages = null) {
+    return pages && this.itemsPerPage ? pages * this.itemsPerPage : null;
+  }
+
   async download(arg, file = null) {
     var torrent = {
       provider: 'Yggtorrent',
