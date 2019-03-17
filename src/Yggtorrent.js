@@ -42,9 +42,7 @@ module.exports = class Yggtorrent {
   }
 
   format_torrents(torrents) {
-    // return torrents.map(torrent => this.format_torrent(torrent));
-    torrents.forEach(torrent => this.format_torrent(torrent));
-    return torrents;
+    return torrents.map(torrent => this.format_torrent(torrent));
   }
 
   format_torrent(t) {
@@ -56,7 +54,7 @@ module.exports = class Yggtorrent {
     t.category = H.re_firstMatch(t.desc, /\/torrent\/(.+)\/[^\/]+/);
     delete t.provider;
     delete t.desc;
-    // return t;
+    return t;
   }
 
   async download(arg, file = null) {
