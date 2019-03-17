@@ -7,16 +7,12 @@ const confDefault = { itemsPerPage: 50 };
 
 module.exports = class Yggtorrent {
   constructor(conf = {}) {
-    this.conf = Object.assign({}, confDefault, require('ygg.conf'), conf);
+    Object.assign(this, confDefault, require('ygg.conf'), conf);
     this.torrentSearch = require('torrent-search-api');
-    this.torrentSearch.enableProvider(
-      'Yggtorrent',
-      this.conf.user,
-      this.conf.pass
-    );
+    this.torrentSearch.enableProvider('Yggtorrent', this.user, this.pass);
     this.ygg = this.torrentSearch.getProvider('Yggtorrent');
-    this.ygg.baseUrl = this.conf.baseUrl;
-    this.ygg.resultsPerPageCount = this.conf.itemsPerPage;
+    this.ygg.baseUrl = this.baseUrl;
+    this.ygg.resultsPerPageCount = this.itemsPerPage;
     this.ygg.categories['LastPresse'] =
       'url:/engine/search?do=search&category=2140&sub_category=2156';
   }
