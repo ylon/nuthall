@@ -42,17 +42,21 @@ module.exports = class Yggtorrent {
   }
 
   format_torrents(torrents) {
-    for (let t of torrents) {
-      t.source = 'yggtorrent';
-      t.id = H.re_firstMatch(t.link, /id=(\d+)/);
-      t.prez = t.desc;
-      t.size_MB = H.filesize_MB(t.size);
-      t.size = 1024 * 1024 * t.size_MB;
-      t.category = H.re_firstMatch(t.desc, /\/torrent\/(.+)\/[^\/]+/);
-      delete t.provider;
-      delete t.desc;
-    }
+    // return torrents.map(torrent => this.format_torrent(torrent));
+    torrents.forEach(torrent => this.format_torrent(torrent));
     return torrents;
+  }
+
+  format_torrent(t) {
+    t.source = 'yggtorrent';
+    t.id = H.re_firstMatch(t.link, /id=(\d+)/);
+    t.prez = t.desc;
+    t.size_MB = H.filesize_MB(t.size);
+    t.size = 1024 * 1024 * t.size_MB;
+    t.category = H.re_firstMatch(t.desc, /\/torrent\/(.+)\/[^\/]+/);
+    delete t.provider;
+    delete t.desc;
+    // return t;
   }
 
   async download(arg, file = null) {
