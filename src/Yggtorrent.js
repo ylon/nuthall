@@ -2,15 +2,15 @@ const dirname = require('path').dirname;
 const fs = require('fs-extra');
 const format = require('string-format');
 const H = require('./H');
-const torrentSearch = require('torrent-search-api');
 
 const confDefault = { name: 'yggtorrent', itemsPerPage: 50 };
 
 module.exports = class Yggtorrent {
   constructor(conf = {}) {
     Object.assign(this, confDefault, require('ygg.conf'), conf);
-    torrentSearch.enableProvider('Yggtorrent', this.user, this.pass);
-    this.ygg = torrentSearch.getProvider('Yggtorrent');
+    this.torrentSearch = require('torrent-search-api');
+    this.torrentSearch.enableProvider('Yggtorrent', this.user, this.pass);
+    this.ygg = this.torrentSearch.getProvider('Yggtorrent');
     this.ygg.baseUrl = this.baseUrl;
     this.ygg.resultsPerPageCount = this.itemsPerPage;
     this.ygg.categories['LastPresse'] =
@@ -19,7 +19,7 @@ module.exports = class Yggtorrent {
 
   search(query, category, limit) {
     limit = limit ? parseInt(limit) : null;
-    return torrentSearch
+    return this.torrentSearch
       .search(query, category, limit)
       .then(torrents => this.format_torrents(torrents));
   }
@@ -30,7 +30,7 @@ module.exports = class Yggtorrent {
 
   last(category, limit) {
     limit = limit ? parseInt(limit) : null;
-    return torrentSearch
+    return this.torrentSearch
       .search('', 'Last' + category, limit)
       .then(torrents => this.format_torrents(torrents));
   }
@@ -76,7 +76,7 @@ module.exports = class Yggtorrent {
       })(arg)
     };
     await fs.ensureDir(dirname(file));
-    return torrentSearch.downloadTorrent(torrent, file);
+    return this.torrentSearch.downloadTorrent(torrent, file);
   }
 
   torrent_link_from_id(id) {
