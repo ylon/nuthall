@@ -3,11 +3,11 @@ const fs = require('fs-extra');
 const format = require('string-format');
 const H = require('./H');
 
-const conf = { itemsPerPage: 50 };
+const confDefault = { itemsPerPage: 50 };
 
 module.exports = class Yggtorrent {
-  constructor() {
-    this.conf = Object.assign(conf, require('ygg.conf'));
+  constructor(conf = {}) {
+    this.conf = Object.assign({}, confDefault, require('ygg.conf'), conf);
     this.torrentSearch = require('torrent-search-api');
     this.torrentSearch.enableProvider(
       'Yggtorrent',
