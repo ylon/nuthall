@@ -55,6 +55,10 @@ module.exports = class Yggtorrent {
     return t;
   }
 
+  torrent_link_from_id(id) {
+    return `${this.ygg.baseUrl}/engine/download_torrent?id=${id}`;
+  }
+
   pageCount2itemCount(pages = null) {
     return pages && this.itemsPerPage ? pages * this.itemsPerPage : null;
   }
@@ -77,14 +81,5 @@ module.exports = class Yggtorrent {
     };
     await fs.ensureDir(dirname(file));
     return this.torrentSearch.downloadTorrent(torrent, file);
-  }
-
-  torrent_link_from_id(id) {
-    return (
-      this.ygg.baseUrl +
-      format('/engine/download_torrent?id={id}', {
-        id: id
-      })
-    );
   }
 };
