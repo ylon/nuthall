@@ -11,7 +11,7 @@ module.exports = class Yggtorrent {
     this.torrentSearch = require('torrent-search-api');
     this.torrentSearch.enableProvider('Yggtorrent', this.user, this.pass);
     this.ygg = this.torrentSearch.getProvider('Yggtorrent');
-    this.ygg.baseUrl = this.baseUrl;
+    if (this.baseUrl) this.ygg.baseUrl = this.baseUrl;
     this.ygg.resultsPerPageCount = this.itemsPerPage;
     this.ygg.categories['LastPresse'] =
       'url:/engine/search?do=search&category=2140&sub_category=2156';
