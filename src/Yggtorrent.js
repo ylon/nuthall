@@ -3,18 +3,16 @@ const fs = require('fs-extra');
 const format = require('string-format');
 const H = require('./H');
 
+const confDefault = { name: 'yggtorrent', itemsPerPage: 50 };
+
 module.exports = class Yggtorrent {
-  constructor() {
-    this.yggConf = require('ygg.conf');
+  constructor(conf = {}) {
+    Object.assign(this, confDefault, require('ygg.conf'), conf);
     this.torrentSearch = require('torrent-search-api');
-    this.torrentSearch.enableProvider(
-      'Yggtorrent',
-      this.yggConf.user,
-      this.yggConf.pass
-    );
+    this.torrentSearch.enableProvider('Yggtorrent', this.user, this.pass);
     this.ygg = this.torrentSearch.getProvider('Yggtorrent');
-    this.ygg.baseUrl = this.yggConf.baseUrl;
-    this.ygg.resultsPerPageCount = 50;
+    if (this.baseUrl) this.ygg.baseUrl = this.baseUrl;
+    this.ygg.resultsPerPageCount = this.itemsPerPage;
     this.ygg.categories['LastPresse'] =
       'url:/engine/search?do=search&category=2140&sub_category=2156';
   }
@@ -42,17 +40,27 @@ module.exports = class Yggtorrent {
   }
 
   format_torrents(torrents) {
-    for (let t of torrents) {
-      t.source = 'yggtorrent';
-      t.id = H.re_firstMatch(t.link, /id=(\d+)/);
-      t.prez = t.desc;
-      t.size_MB = H.filesize_MB(t.size);
-      t.size = 1024 * 1024 * t.size_MB;
-      t.category = H.re_firstMatch(t.desc, /\/torrent\/(.+)\/[^\/]+/);
-      delete t.provider;
-      delete t.desc;
-    }
-    return torrents;
+    return torrents.map(torrent => this.format_torrent(torrent));
+  }
+
+  format_torrent(t) {
+    t.source = this.name;
+    t.id = H.re_firstMatch(t.link, /id=(\d+)/);
+    t.prez = t.desc;
+    t.size_MB = H.filesize_MB(t.size);
+    t.size = 1024 * 1024 * t.size_MB;
+    t.category = H.re_firstMatch(t.desc, /\/torrent\/(.+)\/[^\/]+/);
+    delete t.provider;
+    delete t.desc;
+    return t;
+  }
+
+  torrent_link_from_id(id) {
+    return `${this.ygg.baseUrl}/engine/download_torrent?id=${id}`;
+  }
+
+  pageCount2itemCount(pages = null) {
+    return pages && this.itemsPerPage ? pages * this.itemsPerPage : null;
   }
 
   async download(arg, file = null) {
@@ -73,14 +81,5 @@ module.exports = class Yggtorrent {
     };
     await fs.ensureDir(dirname(file));
     return this.torrentSearch.downloadTorrent(torrent, file);
-  }
-
-  torrent_link_from_id(id) {
-    return (
-      this.ygg.baseUrl +
-      format('/engine/download_torrent?id={id}', {
-        id: id
-      })
-    );
   }
 };
