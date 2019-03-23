@@ -1,6 +1,6 @@
 {
     "name": "nuthall",
-    "version": "1.1.0-0",
+    "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -18,9 +18,11 @@
     "homepage": "https://github.com/ylon/nuthall#readme",
     "dependencies": {
         "filesize-parser": "^1.4.1",
-        "fs-extra": "^4.0.2",
+        "fs-extra": "^4.0.3",
+        "parse-torrent": "^6.1.2",
+        "powersteer": "^2.0.2",
         "string-format": "^0.5.0",
-        "torrent-search-api": "git+https://github.com/ylon/torrent-search-api.git#nuthall"
+        "yargs": "^13.2.2"
     },
     "prettier": {
         "singleQuote": true,

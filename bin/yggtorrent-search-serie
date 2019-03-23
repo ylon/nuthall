@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 
-require('..').yggtorrent()
-  .search_serie(...process.argv.slice(2))
+require('..')
+  .yggtorrent()
+  .searchSerie(...process.argv.slice(2))
   .then(res => {
-    // console.log(res);
-    // console.log(res.length);
-    console.log(JSON.stringify(res));
+    if (res) console.log(JSON.stringify(res));
   })
   .catch(err => {
-    console.log(err);
-    process.exit(1)
-  })
+    console.error(err);
+    process.exit(1);
+  });

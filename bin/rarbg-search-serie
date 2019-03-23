@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 require('..')
-  .yggtorrent()
-  .lastPresse(...process.argv.slice(2))
+  .rarbg()
+  .searchSerie(...process.argv.slice(2))
   .then(res => {
     if (res) console.log(JSON.stringify(res));
   })

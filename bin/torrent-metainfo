@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+var argv = require('yargs')
+  .usage('Usage: torrentFile')
+  .help('h')
+  .alias('h', 'help')
+  .check(argv => argv['_'].length > 0).argv;
+
+require('../lib/Torrent')
+  .metainfo(argv._[0])
+  .then(infos => {
+    delete infos.info.pieces;
+    delete infos.pieces;
+    delete infos.infoBuffer;
+    console.log(infos);
+  })
+  .catch(e => {
+    console.error(e);
+    process.exit(1);
+  });
