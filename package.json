@@ -22,7 +22,7 @@
         "parse-torrent": "^6.1.2",
         "powersteer": "^2.0.2",
         "string-format": "^0.5.0",
-        "yargs": "^13.2.2"
+        "yargs": "^13.3.2"
     },
     "prettier": {
         "singleQuote": true,
